@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <!-- КОДИРОВКА ДОЛЖНА БЫТЬ ПЕРВОЙ -->
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Персональное использование энергии</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <!-- Шрифт -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+   :root {
+      --bg: #f7f8fa;
+      --text: #1a1a1a;
+      --card: #ffffff;
+      --muted: #666;
+      --accent: #6c8cff;
+    }
+
+    body.dark {
+      --bg: #0f1115;
+      --text: #ffffff;
+      --card: #1a1d24;
+      --muted: #aaa;
+      --accent: #8ea2ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    section {
+      padding: 80px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1, h2, h3 {
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 15px;
+      color: var(--muted);
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      max-width: 500px;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .fade {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.8s ease;
+    }
+
+    .fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    ul {
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<section class="hero">
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+  <h1>Управление энергией - новый подход к продуктивности</h1>
+  <p>Перестань управлять временем. Начни управлять своим состоянием.</p>
+  <a href="#about"><button class="btn">Начать управлять своей энергией</button></a>
+</section>
+
+<section id="about" class="fade">
+  <h2>Описание проблемы</h2>
+  <p>Большинство людей пытаются стать продуктивнее, просто распределяя своё время. Но проблема не в нехватке времени - проблема в нехватке энергии.</p>
+  <p>Даже имея идеальный план, человек не сможет его выполнить, если у него нет сил, мотивации и концентрации.</p>
+</section>
+
+<section class="fade">
+  <h2>Основная идея проекта</h2>
+  <p>Этот проект предлагает новый подход - управление личными ресурсами: физическими, эмоциональными, ментальными и духовными.</p>
+  <p>Осознанное распределение энергии помогает достигать целей без переутомления и выгорания.</p>
+</section>
+
+<section class="fade">
+  <h2>Из чего состоит наша энергия</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Физическая энергия</h3>
+      <p>Связана с телом: сон, питание, движение. Если её не хватает - появляется усталость.</p>
+    </div>
+
+    <div class="card">
+      <h3>Эмоциональная энергия</h3>
+      <p>Отвечает за настроение. Позитив повышает продуктивность, негатив снижает.</p>
+    </div>
+
+    <div class="card">
+      <h3>Ментальная энергия</h3>
+      <p>Концентрация и мышление. Помогает решать задачи и принимать решения.</p>
+    </div>
+
+    <div class="card">
+      <h3>Духовная энергия</h3>
+      <p>Смысл и цели. Даёт внутреннюю мотивацию.</p>
+    </div>
+  </div>
+</section>
+
+<section class="fade">
+  <h2>Почему возникает выгорание</h2>
+  <ul>
+    <li>энергия тратится быстрее, чем восстанавливается</li>
+    <li>накапливается усталость</li>
+    <li>падает мотивация</li>
+  </ul>
+  <p>Главная причина - неправильное распределение энергии, а не времени.</p>
+</section>
+
+<section class="fade">
+  <h2>Как управлять своей энергией</h2>
+  <ul>
+    <li>Дневник энергии</li>
+    <li>Планирование с учётом состояния</li>
+    <li>Чередование работы и отдыха</li>
+  </ul>
+
+  <h3>Шаги</h3>
+  <ul>
+    <li>Отслеживай своё состояние в течение дня</li>
+    <li>Определи, какие задачи дают энергию, а какие забирают</li>
+    <li>Планируй сложные задачи на время максимальной энергии</li>
+    <li>Добавляй отдых и восстановление</li>
+    <li>Анализируй результаты</li>
+  </ul>
+</section>
+
+<section class="fade">
+  <h2>Связь и обратная связь</h2>
+  <p>Если у вас есть вопросы или идеи - вы можете связаться с нами. Ваше мнение поможет улучшить проект.</p>
+  <p>Телефон: <a href="tel:+77052963774">+7 705 296 37 74</a></p>
+</section>
+
+<footer>
+  © Проект "Персональное управление энергией"
+</footer>
+
+<script>
+ function toggleTheme() {
+    document.body.classList.toggle('dark');
+  }
+
+  const elements = document.querySelectorAll('.fade');
+
+  if (!('IntersectionObserver' in window)) {
+  document.querySelectorAll('.fade').forEach(el => {
+    el.classList.add('visible');
+  });
+}
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  });
+
+  elements.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
