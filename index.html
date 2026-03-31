@@ -570,7 +570,7 @@ function saveNote() {
     const noteInput = document.getElementById('note');
     if (!noteInput.value.trim()) return;
     const li = document.createElement('li');
-    li.innerHTML = <strong>${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</strong>: ${noteInput.value};
+    li.innerHTML = `<strong>${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</strong>: ${noteInput.value}`;
     document.getElementById('notesList').prepend(li);
     noteInput.value = "";
 }
