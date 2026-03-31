@@ -538,6 +538,13 @@ const observer = new IntersectionObserver(entries => {
 
 document.querySelectorAll('.fade').forEach(el => observer.observe(el));
 
+function updateVal(id) {
+    const valEl = document.getElementById('val-' + id);
+    if (valEl) {
+        valEl.innerText = document.getElementById(id).value + '%';
+    }
+}
+
 function analyzeEnergy() {
     const p = +document.getElementById('physical').value;
     const e = +document.getElementById('emotional').value;
@@ -562,17 +569,13 @@ function analyzeEnergy() {
     resultEl.innerText = messages[currentLang][status];
 }
 
-function updateVal(id) {
-    document.getElementById('val-' + id).innerText = document.getElementById(id).value + '%';
-}
-
 function saveNote() {
     const noteInput = document.getElementById('note');
     if (!noteInput.value.trim()) return;
+    
     const li = document.createElement('li');
-  
     const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    li.innerHTML = <strong>${time}</strong>: ${noteInput.value};
+    li.innerHTML = `<strong>${time}</strong>: ${noteInput.value}`;
     
     document.getElementById('notesList').prepend(li);
     noteInput.value = "";
@@ -580,13 +583,18 @@ function saveNote() {
 
 function toggleLang() {
     currentLang = currentLang === "ru" ? "en" : "ru";
+    
     document.querySelectorAll("[data-ru]").forEach(el => {
         const text = el.getAttribute("data-" + currentLang);
-        if (text) el.innerText = text;
+        if (text) {
+            el.innerHTML = text; 
+        }
     });
     
     const noteInput = document.getElementById('note');
-    noteInput.placeholder = noteInput.getAttribute("data-placeholder-" + currentLang);
+    const placeholderText = noteInput.getAttribute("data-placeholder-" + currentLang);
+    if (placeholderText) noteInput.placeholder = placeholderText;
+    
     document.getElementById("lang-btn").innerText = currentLang === "ru" ? "EN" : "RU";
     
     if (document.getElementById('result').innerText !== "") {
