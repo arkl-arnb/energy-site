@@ -1,19 +1,17 @@
-<!DOCTYPE html>
+<html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Персональное использование энергии</title>
-  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Управление личной энергией</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-   :root {
-      --bg: #f7f8fa;
+    :root {
+      --bg: #f0f2f5;
       --text: #1a1a1a;
-      --card: #ffffff;
+      --card: rgba(255, 255, 255, 0.7);
+      --card-border: rgba(255, 255, 255, 0.4);
       --muted: #666;
       --accent: #6c8cff;
       --btn-bg: #ffffff; 
@@ -21,13 +19,12 @@
     }
 
     body.dark {
-      --bg: #0f1115;
+      --bg: #0b0e14;
       --text: #ffffff;
-      --card: #1a1d24;
+      --card: rgba(26, 29, 36, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
       --muted: #aaa;
       --accent: #8ea2ff;
-      --btn-bg: #ffffff;
-      --btn-text: #1a1a1a;
     }
 
     * {
@@ -42,7 +39,13 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      transition: background 0.3s ease;
     }
+
+    /* Кастомный скроллбар */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
     section {
       padding: 80px 20px;
@@ -50,14 +53,22 @@
       margin: 0 auto;
     }
 
-    h1, h2, h3 {
-      margin-bottom: 20px;
-      font-weight: 600;
+    /* Эффект стекла для карточек */
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    p {
-      margin-bottom: 15px;
-      color: var(--muted);
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(108, 140, 255, 0.2);
+      border-color: var(--accent);
     }
 
     .hero {
@@ -67,88 +78,59 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      background: radial-gradient(circle at center, rgba(108, 140, 255, 0.1) 0%, transparent 70%);
     }
 
-    .hero h1 {
-      font-size: 40px;
-    }
-
-    .hero p {
-      font-size: 18px;
-      max-width: 500px;
-    }
+    .hero h1 { font-size: clamp(28px, 5vw, 48px); margin-bottom: 20px; }
+    .hero p { font-size: 18px; max-width: 600px; margin-bottom: 30px; }
 
     .btn {
-      margin-top: 30px;
-      padding: 12px 24px;
+      padding: 14px 28px;
       border: none;
       background: var(--accent);
       color: white;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
       transition: 0.3s;
+      font-weight: 600;
       font-family: inherit;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
-    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(108, 140, 255, 0.3); }
 
     .controls-fixed {
       position: fixed;
       top: 20px;
       right: 20px;
       display: flex;
-      gap: 10px;
-      align-items: center;
+      gap: 12px;
       z-index: 1000;
     }
 
     .btn-round {
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      background: var(--btn-bg);
-      color: var(--btn-text);
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      backdrop-filter: blur(5px);
+      color: var(--text);
       cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .btn-round:hover {
-      background: var(--accent);
-      color: #ffffff;
-      transform: scale(1.1);
+      transition: 0.3s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      gap: 25px;
     }
 
-    .card {
-      background: var(--card);
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
+    /* Анимация появления */
     .fade {
       opacity: 0;
-      transform: translateY(20px);
-      transition: 0.8s ease;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
     }
 
     .fade.visible {
@@ -156,74 +138,50 @@
       transform: translateY(0);
     }
 
-    ul {
-      padding-left: 20px;
-      color: var(--muted);
+    /* Поочередное появление карточек */
+    .grid .card { opacity: 0; transform: translateY(20px); transition: 0.5s ease-out; }
+    .fade.visible .card { opacity: 1; transform: translateY(0); }
+    .grid .card:nth-child(1) { transition-delay: 0.1s; }
+    .grid .card:nth-child(2) { transition-delay: 0.2s; }
+    .grid .card:nth-child(3) { transition-delay: 0.3s; }
+    .grid .card:nth-child(4) { transition-delay: 0.4s; }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: #ddd;
+      border-radius: 5px;
+      outline: none;
+      margin: 15px 0;
+      accent-color: var(--accent);
     }
 
-    footer {
-      text-align: center;
-      padding: 40px;
-      font-size: 14px;
-      color: var(--muted);
+    #note {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid var(--card-border);
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      outline: none;
     }
 
-    @media (max-width: 600px) {
-      .hero h1 { font-size: 28px; }
-      .controls-fixed { top: 10px; right: 10px; }
+    #notesList li {
+      background: var(--card);
+      padding: 12px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      border-left: 5px solid var(--accent);
+      animation: slideIn 0.3s ease;
     }
 
-.energy-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
 
-input[type="range"] {
-    width: 100%;
-    cursor: pointer;
-    -webkit-appearance: none;
-    height: 6px;
-    background: #ddd;
-    border-radius: 5px;
-    outline: none;
-    margin: 10px 0;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    background: var(--accent);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-}
-
-#note {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    outline: none;
-    font-family: inherit;
-}
-
-#notesList {
-    list-style: none;
-    padding: 0;
-    margin-top: 15px;
-}
-
-#notesList li {
-    background: var(--bg);
-    padding: 10px;
-    margin-bottom: 5px;
-    border-radius: 6px;
-    border-left: 4px solid var(--accent);
-    font-size: 14px;
-}
+    footer { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 14px; }
   </style>
 </head>
 
@@ -530,13 +488,11 @@ function toggleTheme() {
     themeBtn.innerText = body.classList.contains('dark') ? "☀️" : "🌙";
 }
 
-// Анимация появления при скролле
 const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
     });
-}, { threshold: 0.1 }); // Добавили порог срабатывания для мобильных
-
+});
 document.querySelectorAll('.fade').forEach(el => observer.observe(el));
 
 function analyzeEnergy() {
@@ -561,6 +517,7 @@ function analyzeEnergy() {
     let status = avg > 70 ? "high" : (avg > 40 ? "mid" : "low");
     const resultEl = document.getElementById('result');
     resultEl.innerText = messages[currentLang][status];
+    resultEl.setAttribute('data-status', status); 
 }
 
 function updateVal(id) {
@@ -571,27 +528,32 @@ function saveNote() {
     const noteInput = document.getElementById('note');
     if (!noteInput.value.trim()) return;
     const li = document.createElement('li');
-    
-    // ИСПРАВЛЕНО: Добавлены обратные кавычки ``
     const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     li.innerHTML = `<strong>${time}</strong>: ${noteInput.value}`;
     
     document.getElementById('notesList').prepend(li);
     noteInput.value = "";
 }
+}
 
 function toggleLang() {
     currentLang = currentLang === "ru" ? "en" : "ru";
-    document.querySelectorAll("[data-ru]").forEach(el => {
-        const text = el.getAttribute("data-" + currentLang);
-        if (text) el.innerText = text;
-    });
     
+    document.querySelectorAll("[data-ru]").forEach(el => {
+        const translation = el.getAttribute("data-" + currentLang);
+        if (translation) {
+            el.innerHTML = translation; 
+        }
+    });
+
     const noteInput = document.getElementById('note');
-    noteInput.placeholder = noteInput.getAttribute("data-placeholder-" + currentLang);
+    const placeholder = noteInput.getAttribute("data-placeholder-" + currentLang);
+    if (placeholder) noteInput.placeholder = placeholder;
+
     document.getElementById("lang-btn").innerText = currentLang === "ru" ? "EN" : "RU";
     
-    if (document.getElementById('result').innerText !== "") {
+    const resultEl = document.getElementById('result');
+    if (resultEl && resultEl.innerText !== "") {
         analyzeEnergy();
     }
 }
