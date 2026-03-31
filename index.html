@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Персональное использование энергии</title>
   <link rel="icon" type="image/png" href="favicon.png">
-  <!-- Шрифт -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
@@ -17,6 +16,8 @@
       --card: #ffffff;
       --muted: #666;
       --accent: #6c8cff;
+      --btn-bg: #ffffff; 
+      --btn-text: #1a1a1a; 
     }
 
     body.dark {
@@ -25,6 +26,8 @@
       --card: #1a1d24;
       --muted: #aaa;
       --accent: #8ea2ff;
+      --btn-bg: #ffffff;
+      --btn-text: #1a1a1a;
     }
 
     * {
@@ -84,11 +87,44 @@
       border-radius: 8px;
       cursor: pointer;
       transition: 0.3s;
+      font-family: inherit;
     }
 
     .btn:hover {
       transform: translateY(-2px);
       opacity: 0.9;
+    }
+
+    .controls-fixed {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .btn-round {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-round:hover {
+      background: var(--accent);
+      color: #ffffff;
+      transform: scale(1.1);
     }
 
     .grid {
@@ -133,19 +169,72 @@
     }
 
     @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 28px;
-      }
+      .hero h1 { font-size: 28px; }
+      .controls-fixed { top: 10px; right: 10px; }
     }
+
+.energy-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    -webkit-appearance: none;
+    height: 6px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    margin: 10px 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+#note {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    outline: none;
+    font-family: inherit;
+}
+
+#notesList {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+#notesList li {
+    background: var(--bg);
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    border-left: 4px solid var(--accent);
+    font-size: 14px;
+}
   </style>
 </head>
 
 <body>
 
-<section class="hero">
-  <button class="btn" style="position:absolute; top:20px; right:20px;" onclick="toggleLang()">EN</button>
-  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+<div class="controls-fixed">
+  <button id="theme-btn" class="btn-round" onclick="toggleTheme()">🌙</button>
+  <button id="lang-btn" class="btn-round" onclick="toggleLang()">EN</button>
+</div>
 
+<section class="hero">
 <h1 data-ru="Управление энергией - новый подход к продуктивности"
     data-en="Energy management - a new approach to productivity">
 Управление энергией - новый подход к продуктивности
@@ -164,40 +253,34 @@ data-en="Start managing your energy">
 
 <section id="about" class="fade">
   <h2 data-ru="Описание проблемы" data-en="Problem description">Описание проблемы</h2>
-
   <p data-ru="Большинство людей пытаются стать продуктивнее, просто распределяя своё время. Но проблема не в нехватке времени - проблема в нехватке энергии."
      data-en="Most people try to become more productive by simply managing their time. But the problem is not a lack of time - it is a lack of energy.">
     Большинство людей пытаются стать продуктивнее, просто распределяя своё время. Но проблема не в нехватке времени - проблема в нехватке энергии.
   </p>
-
   <p data-ru="Даже имея идеальный план, человек не сможет его выполнить, если у него нет сил, мотивации и концентрации."
      data-en="Even with a perfect plan, a person will not be able to execute it if they lack energy, motivation, and concentration.">
     Даже имея идеальный план, человек не сможет его выполнить, если у него нет сил, мотивации и концентрации.
   </p>
 </section>
 
-
 <section class="fade">
   <h2 data-ru="Система персонального управления энергией" data-en="Personal energy management system">
     Система персонального управления энергией
   </h2>
-
   <p data-ru="Этот проект посвящен управлению жизненными ресурсами - физическими, эмоциональными и ментальными. Его цель - помочь человеку осознанно распределять энергию в течение дня, недели и месяца."
      data-en="This project is dedicated to managing life resources - physical, emotional, and mental. Its goal is to help a person consciously distribute energy throughout the day, week, and month.">
     Этот проект посвящен управлению жизненными ресурсами - физическими, эмоциональными и ментальными. Его цель - помочь человеку осознанно распределять энергию в течение дня, недели и месяца.
   </p>
-
   <p data-ru="Современный ритм жизни требует постоянной активности и многозадачности, что приводит к перегрузке и потере контроля над своим состоянием."
      data-en="The modern pace of life requires constant activity and multitasking, which leads to overload and loss of control over one's state.">
     Современный ритм жизни требует постоянной активности и многозадачности, что приводит к перегрузке и потере контроля над своим состоянием.
   </p>
 </section>
 
-  <section class="fade">
+<section class="fade">
   <h2 data-ru="Из чего состоит наша энергия" data-en="What our energy consists of">
     Из чего состоит наша энергия
   </h2>
-
   <div class="grid">
     <div class="card">
       <h3 data-ru="Физическая энергия" data-en="Physical energy">Физическая энергия</h3>
@@ -206,7 +289,6 @@ data-en="Start managing your energy">
         Связана с телом: сон, питание, движение. Если её не хватает - появляется усталость.
       </p>
     </div>
-
     <div class="card">
       <h3 data-ru="Эмоциональная энергия" data-en="Emotional energy">Эмоциональная энергия</h3>
       <p data-ru="Отвечает за настроение. Позитив повышает продуктивность, негатив снижает."
@@ -214,7 +296,6 @@ data-en="Start managing your energy">
         Отвечает за настроение. Позитив повышает продуктивность, негатив снижает.
       </p>
     </div>
-
     <div class="card">
       <h3 data-ru="Ментальная энергия" data-en="Mental energy">Ментальная энергия</h3>
       <p data-ru="Концентрация и мышление. Помогает решать задачи и принимать решения."
@@ -222,7 +303,6 @@ data-en="Start managing your energy">
         Концентрация и мышление. Помогает решать задачи и принимать решения.
       </p>
     </div>
-
     <div class="card">
       <h3 data-ru="Духовная энергия" data-en="Spiritual energy">Духовная энергия</h3>
       <p data-ru="Смысл и цели. Даёт внутреннюю мотивацию."
@@ -235,344 +315,278 @@ data-en="Start managing your energy">
   
 <section class="fade">
   <h2 data-ru="Основные проблемы" data-en="Main problems">Основные проблемы</h2>
-
   <ul>
     <li data-ru="Хроническая усталость и выгорание" data-en="Chronic fatigue and burnout">Хроническая усталость и выгорание</li>
     <li data-ru="Снижение продуктивности к концу дня" data-en="Decreased productivity by the end of the day">Снижение продуктивности к концу дня</li>
     <li data-ru="Чувство потери контроля над результатами" data-en="Feeling of losing control over results">Чувство потери контроля над результатами</li>
     <li data-ru="Стресс и постоянное напряжение" data-en="Stress and constant tension">Стресс и постоянное напряжение</li>
   </ul>
-
-  <p data-ru="Главная причина - люди управляют временем, но игнорируют свою энергию."
-     data-en="The main reason is that people manage time but ignore their energy.">
-    Главная причина - люди управляют временем, но игнорируют свою энергию.
-  </p>
 </section>
 
-  <section class="fade">
-  <h2 data-ru="Почему возникает выгорание" data-en="Why burnout occurs">
-    Почему возникает выгорание
-  </h2>
-
+<section class="fade">
+  <h2 data-ru="Почему возникает выгорание" data-en="Why burnout occurs">Почему возникает выгорание</h2>
   <ul>
     <li data-ru="энергия тратится быстрее, чем восстанавливается" data-en="energy is spent faster than it is restored">энергия тратится быстрее, чем восстанавливается</li>
     <li data-ru="накапливается усталость" data-en="fatigue accumulates">накапливается усталость</li>
     <li data-ru="падает мотивация" data-en="motivation decreases">падает мотивация</li>
   </ul>
-
-  <p data-ru="Главная причина - неправильное распределение энергии, а не времени."
-     data-en="The main reason is improper energy distribution, not time.">
-    Главная причина - неправильное распределение энергии, а не времени.
-  </p>
 </section>
 
 <section class="fade">
-  <h2 data-ru="Цель и задачи проекта" data-en="Project goal and objectives">
-    Цель и задачи проекта
-  </h2>
-
-  <p>
-    <strong data-ru="Цель:" data-en="Goal:">Цель:</strong>
-    <span data-ru=" создать систему управления энергией для повышения качества жизни и продуктивности."
-          data-en=" to create an energy management system to improve quality of life and productivity.">
-      создать систему управления энергией для повышения качества жизни и продуктивности.
-    </span>
-  </p>
-
-  <ul>
-    <li data-ru="Провести самоаудит энергетических состояний" data-en="Conduct a self-audit of energy states">Провести самоаудит энергетических состояний</li>
-    <li data-ru="Разделить задачи по влиянию на энергию" data-en="Divide tasks by their impact on energy">Разделить задачи по влиянию на энергию</li>
-    <li data-ru="Создать энергетический календарь" data-en="Create an energy calendar">Создать энергетический календарь</li>
-    <li data-ru="Протестировать систему на практике" data-en="Test the system in practice">Протестировать систему на практике</li>
-  </ul>
+<h2 data-ru="Цель и задачи проекта" data-en="Project goal and objectives">
+Цель и задачи проекта
+</h2>
+<p>
+<strong data-ru="Цель:" data-en="Goal:">Цель:</strong>
+<span data-ru=" создать систему управления энергией для повышения качества жизни и продуктивности."
+data-en=" to create an energy management system to improve quality of life and productivity.">
+создать систему управления энергией для повышения качества жизни и продуктивности.
+</span>
+</p>
+<ul>
+<li data-ru="Провести самоаудит энергетических состояний" data-en="Conduct a self-audit of energy states">Провести самоаудит энергетических состояний</li>
+<li data-ru="Разделить задачи по влиянию на энергию" data-en="Divide tasks by their impact on energy">Разделить задачи по влиянию на энергию</li>
+<li data-ru="Создать энергетический календарь" data-en="Create an energy calendar">Создать энергетический календарь</li>
+<li data-ru="Протестировать систему на практике" data-en="Test the system in practice">Протестировать систему на практике</li>
+</ul>
+</section>
+<section class="fade">
+<h2 data-ru="Принципы системы" data-en="System principles">
+Принципы системы
+</h2>
+<ul>
+<li data-ru="Энергия - это динамический ресурс, который требует восстановления"
+data-en="Energy is a dynamic resource that requires recovery">
+Энергия - это динамический ресурс, который требует восстановления
+</li>
+<li data-ru="Баланс работы и отдыха - ключ к стабильной продуктивности"
+data-en="Balance between work and rest is the key to stable productivity">
+Баланс работы и отдыха - ключ к стабильной продуктивности
+</li>
+<li data-ru="Осознанность - умение отслеживать своё состояние"
+data-en="Awareness is the ability to track your state">
+Осознанность - умение отслеживать своё состояние
+</li>
+</ul>
+</section>
+<section class="fade">
+<h2 data-ru="Как управлять своей энергией" data-en="How to manage your energy">
+Как управлять своей энергией
+</h2>
+<ul>
+<li data-ru="Дневник энергии" data-en="Energy diary">Дневник энергии</li>
+<li data-ru="Планирование с учётом состояния" data-en="Planning based on your condition">Планирование с учётом состояния</li>
+<li data-ru="Чередование работы и отдыха" data-en="Alternating work and rest">Чередование работы и отдыха</li>
+</ul>
+<h3 data-ru="Шаги" data-en="Steps">Шаги</h3>
+<ul>
+<li data-ru="Отслеживай своё состояние в течение дня" data-en="Track your state throughout the day">Отслеживай своё состояние в течение дня</li>
+<li data-ru="Определи, какие задачи дают энергию, а какие забирают"
+data-en="Identify which tasks give energy and which drain it">
+Определи, какие задачи дают энергию, а какие забирают
+</li>
+<li data-ru="Планируй сложные задачи на время максимальной энергии"
+data-en="Plan difficult tasks during peak energy time">
+Планируй сложные задачи на время максимальной энергии
+</li>
+<li data-ru="Добавляй отдых и восстановление" data-en="Add rest and recovery">Добавляй отдых и восстановление</li>
+<li data-ru="Анализируй результаты" data-en="Analyze results">Анализируй результаты</li>
+</ul>
+</section>
+<section class="fade">
+<h2 data-ru="Как работает система" data-en="How the system works">
+Как работает система
+</h2>
+<h3 data-ru="Неделя 1 - Осознание" data-en="Week 1 - Awareness">Неделя 1 - Осознание</h3>
+<p data-ru="Ведение дневника энергии: отслеживание состояния и влияния задач на него."
+data-en="Keeping an energy diary: tracking your state and how tasks affect it.">
+Ведение дневника энергии: отслеживание состояния и влияния задач на него.
+</p>
+<h3 data-ru="Неделя 2 - Анализ" data-en="Week 2 - Analysis">Неделя 2 - Анализ</h3>
+<p data-ru="Определение типов задач:" data-en="Identifying types of tasks:">Определение типов задач:</p>
+<ul>
+<li data-ru="Сложные поглотители - требуют много энергии"
+data-en="Heavy consumers - require a lot of energy">
+Сложные поглотители - требуют много энергии
+</li>
+<li data-ru="Легкие поглотители - рутинные задачи"
+data-en="Light consumers - routine tasks">
+Легкие поглотители - рутинные задачи
+</li>
+<li data-ru="Быстрые доноры - быстро восстанавливают силы"
+data-en="Quick donors - quickly restore energy">
+Быстрые доноры - быстро восстанавливают силы
+</li>
+<li data-ru="Капитальные доноры - дают долгосрочную энергию"
+data-en="Major donors - provide long-term energy">
+Капитальные доноры - дают долгосрочную энергию
+</li>
+</ul>
+<h3 data-ru="Неделя 3-4 - Практика" data-en="Weeks 3-4 - Practice">Неделя 3-4 - Практика</h3>
+<ul>
+<li data-ru="Планирование задач с учетом энергии" data-en="Planning tasks based on energy">Планирование задач с учетом энергии</li>
+<li data-ru="Регулярные перерывы и восстановление" data-en="Regular breaks and recovery">Регулярные перерывы и восстановление</li>
+<li data-ru="Чередование нагрузки" data-en="Alternating workload">Чередование нагрузки</li>
+</ul>
+</section>
+<section class="fade">
+<h2 data-ru="Ожидаемые результаты" data-en="Expected results">
+Ожидаемые результаты
+</h2>
+<h3 data-ru="Качественные" data-en="Qualitative">Качественные</h3>
+<ul>
+<li data-ru="Повышение осознанности" data-en="Increased awareness">Повышение осознанности</li>
+<li data-ru="Снижение стресса" data-en="Reduced stress">Снижение стресса</li>
+<li data-ru="Чувство контроля над жизнью" data-en="Sense of control over life">Чувство контроля над жизнью</li>
+</ul>
+<h3 data-ru="Количественные" data-en="Quantitative">Количественные</h3>
+<ul>
+<li data-ru="+20% к уровню энергии" data-en="+20% to energy level">+20% к уровню энергии</li>
+<li data-ru="+30% к удовлетворенности продуктивностью" data-en="+30% to productivity satisfaction">+30% к удовлетворенности продуктивностью</li>
+<li data-ru="-25% дней с полным истощением" data-en="-25% days with complete exhaustion">-25% дней с полным истощением</li>
+</ul>
+</section>
+<section class="fade">
+<h2 data-ru="Итог" data-en="Conclusion">Итог</h2>
+<p data-ru="Система персонального управления энергией - это практический инструмент, который помогает не просто справляться с задачами, а жить более осознанно и эффективно."
+data-en="The personal energy management system is a practical tool that helps not only cope with tasks but also live more consciously and efficiently.">
+Система персонального управления энергией - это практический инструмент, который помогает не просто справляться с задачами, а жить более осознанно и эффективно.
+</p>
+<p data-ru="Это инвестиция в самый важный ресурс - в себя."
+data-en="This is an investment in the most important resource - yourself.">
+Это инвестиция в самый важный ресурс - в себя.
+</p>
+</section>
+<section class="fade">
+<h2 data-ru="Связь и обратная связь" data-en="Contact and feedback">
+Связь и обратная связь
+</h2>
+<p data-ru="Если у вас есть вопросы или идеи - вы можете связаться с нами. Ваше мнение поможет улучшить проект."
+data-en="If you have questions or ideas, you can contact us. Your feedback will help improve the project.">
+Если у вас есть вопросы или идеи - вы можете связаться с нами. Ваше мнение поможет улучшить проект.
+</p>
+<p>
+<span data-ru="Телефон:" data-en="Phone:">Телефон:</span>
+<a href="tel:+77052963774">+7 705 296 37 74</a>
+</p>
 </section>
 
 <section class="fade">
-  <h2 data-ru="Принципы системы" data-en="System principles">
-    Принципы системы
-  </h2>
-
-  <ul>
-    <li data-ru="Энергия - это динамический ресурс, который требует восстановления"
-        data-en="Energy is a dynamic resource that requires recovery">
-      Энергия - это динамический ресурс, который требует восстановления
-    </li>
-
-    <li data-ru="Баланс работы и отдыха - ключ к стабильной продуктивности"
-        data-en="Balance between work and rest is the key to stable productivity">
-      Баланс работы и отдыха - ключ к стабильной продуктивности
-    </li>
-
-    <li data-ru="Осознанность - умение отслеживать своё состояние"
-        data-en="Awareness is the ability to track your state">
-      Осознанность - умение отслеживать своё состояние
-    </li>
-  </ul>
-</section>
-
- <section class="fade">
-  <h2 data-ru="Как управлять своей энергией" data-en="How to manage your energy">
-    Как управлять своей энергией
-  </h2>
-
-  <ul>
-    <li data-ru="Дневник энергии" data-en="Energy diary">Дневник энергии</li>
-    <li data-ru="Планирование с учётом состояния" data-en="Planning based on your condition">Планирование с учётом состояния</li>
-    <li data-ru="Чередование работы и отдыха" data-en="Alternating work and rest">Чередование работы и отдыха</li>
-  </ul>
-
-  <h3 data-ru="Шаги" data-en="Steps">Шаги</h3>
-
-  <ul>
-    <li data-ru="Отслеживай своё состояние в течение дня" data-en="Track your state throughout the day">Отслеживай своё состояние в течение дня</li>
-    <li data-ru="Определи, какие задачи дают энергию, а какие забирают"
-        data-en="Identify which tasks give energy and which drain it">
-      Определи, какие задачи дают энергию, а какие забирают
-    </li>
-    <li data-ru="Планируй сложные задачи на время максимальной энергии"
-        data-en="Plan difficult tasks during peak energy time">
-      Планируй сложные задачи на время максимальной энергии
-    </li>
-    <li data-ru="Добавляй отдых и восстановление" data-en="Add rest and recovery">Добавляй отдых и восстановление</li>
-    <li data-ru="Анализируй результаты" data-en="Analyze results">Анализируй результаты</li>
-  </ul>
-</section>
-
-<section class="fade">
-  <h2 data-ru="Как работает система" data-en="How the system works">
-    Как работает система
-  </h2>
-
-  <h3 data-ru="Неделя 1 - Осознание" data-en="Week 1 - Awareness">Неделя 1 - Осознание</h3>
-  <p data-ru="Ведение дневника энергии: отслеживание состояния и влияния задач на него."
-     data-en="Keeping an energy diary: tracking your state and how tasks affect it.">
-    Ведение дневника энергии: отслеживание состояния и влияния задач на него.
-  </p>
-
-  <h3 data-ru="Неделя 2 - Анализ" data-en="Week 2 - Analysis">Неделя 2 - Анализ</h3>
-  <p data-ru="Определение типов задач:" data-en="Identifying types of tasks:">Определение типов задач:</p>
-
-  <ul>
-    <li data-ru="Сложные поглотители - требуют много энергии"
-        data-en="Heavy consumers - require a lot of energy">
-      Сложные поглотители - требуют много энергии
-    </li>
-
-    <li data-ru="Легкие поглотители - рутинные задачи"
-        data-en="Light consumers - routine tasks">
-      Легкие поглотители - рутинные задачи
-    </li>
-
-    <li data-ru="Быстрые доноры - быстро восстанавливают силы"
-        data-en="Quick donors - quickly restore energy">
-      Быстрые доноры - быстро восстанавливают силы
-    </li>
-
-    <li data-ru="Капитальные доноры - дают долгосрочную энергию"
-        data-en="Major donors - provide long-term energy">
-      Капитальные доноры - дают долгосрочную энергию
-    </li>
-  </ul>
-
-  <h3 data-ru="Неделя 3-4 - Практика" data-en="Weeks 3-4 - Practice">Неделя 3-4 - Практика</h3>
-
-  <ul>
-    <li data-ru="Планирование задач с учетом энергии" data-en="Planning tasks based on energy">Планирование задач с учетом энергии</li>
-    <li data-ru="Регулярные перерывы и восстановление" data-en="Regular breaks and recovery">Регулярные перерывы и восстановление</li>
-    <li data-ru="Чередование нагрузки" data-en="Alternating workload">Чередование нагрузки</li>
-  </ul>
-</section>
-
-<section class="fade">
-  <h2 data-ru="Ожидаемые результаты" data-en="Expected results">
-    Ожидаемые результаты
-  </h2>
-
-  <h3 data-ru="Качественные" data-en="Qualitative">Качественные</h3>
-  <ul>
-    <li data-ru="Повышение осознанности" data-en="Increased awareness">Повышение осознанности</li>
-    <li data-ru="Снижение стресса" data-en="Reduced stress">Снижение стресса</li>
-    <li data-ru="Чувство контроля над жизнью" data-en="Sense of control over life">Чувство контроля над жизнью</li>
-  </ul>
-
-  <h3 data-ru="Количественные" data-en="Quantitative">Количественные</h3>
-  <ul>
-    <li data-ru="+20% к уровню энергии" data-en="+20% to energy level">+20% к уровню энергии</li>
-    <li data-ru="+30% к удовлетворенности продуктивностью" data-en="+30% to productivity satisfaction">+30% к удовлетворенности продуктивностью</li>
-    <li data-ru="-25% дней с полным истощением" data-en="-25% days with complete exhaustion">-25% дней с полным истощением</li>
-  </ul>
-</section>
-
-<section class="fade">
-  <h2 data-ru="Итог" data-en="Conclusion">Итог</h2>
-
-  <p data-ru="Система персонального управления энергией - это практический инструмент, который помогает не просто справляться с задачами, а жить более осознанно и эффективно."
-     data-en="The personal energy management system is a practical tool that helps not only cope with tasks but also live more consciously and efficiently.">
-    Система персонального управления энергией - это практический инструмент, который помогает не просто справляться с задачами, а жить более осознанно и эффективно.
-  </p>
-
-  <p data-ru="Это инвестиция в самый важный ресурс - в себя."
-     data-en="This is an investment in the most important resource - yourself.">
-    Это инвестиция в самый важный ресурс - в себя.
-  </p>
-</section>
-
-  <section class="fade">
-  <h2 data-ru="Связь и обратная связь" data-en="Contact and feedback">
-    Связь и обратная связь
-  </h2>
-
-  <p data-ru="Если у вас есть вопросы или идеи - вы можете связаться с нами. Ваше мнение поможет улучшить проект."
-     data-en="If you have questions or ideas, you can contact us. Your feedback will help improve the project.">
-    Если у вас есть вопросы или идеи - вы можете связаться с нами. Ваше мнение поможет улучшить проект.
-  </p>
-
-  <p>
-    <span data-ru="Телефон:" data-en="Phone:">Телефон:</span>
-    <a href="tel:+77052963774">+7 705 296 37 74</a>
-  </p>
-</section>
-
-<section class="fade">
-  <h2 data-ru="Проверка уровня энергии" data-en="Energy level check">
-    Проверка уровня энергии
-  </h2>
-
-  <p data-ru="Отметь своё состояние и получи рекомендацию"
-     data-en="Mark your state and get a recommendation">
-    Отметь своё состояние и получи рекомендацию
-  </p>
-
+  <h2 data-ru="Проверка уровня энергии" data-en="Energy level check">Проверка уровня энергии</h2>
   <div class="card">
-    <label data-ru="Физическая энергия:" data-en="Physical energy:">Физическая энергия:</label>
-    <input type="range" min="0" max="100" value="50" id="physical">
-
-    <label data-ru="Эмоциональная энергия:" data-en="Emotional energy:">Эмоциональная энергия:</label>
-    <input type="range" min="0" max="100" value="50" id="emotional">
-
-    <label data-ru="Ментальная энергия:" data-en="Mental energy:">Ментальная энергия:</label>
-    <input type="range" min="0" max="100" value="50" id="mental">
-
-    <label data-ru="Духовная энергия:" data-en="Spiritual energy:">Духовная энергия:</label>
-    <input type="range" min="0" max="100" value="50" id="spiritual">
-
-    <button class="btn"
-            data-ru="Анализировать"
-            data-en="Analyze"
-            onclick="analyzeEnergy()">Анализировать</button>
-
-    <p id="result"></p>
+    <div class="energy-group">
+      <div style="display:flex; justify-content: space-between;">
+        <label data-ru="Физическая энергия:" data-en="Physical energy:">Физическая энергия:</label>
+        <span id="val-physical">50%</span>
+      </div>
+      <input type="range" min="0" max="100" value="50" id="physical" oninput="updateVal('physical')">
+    </div>
+    <div class="energy-group">
+      <div style="display:flex; justify-content: space-between;">
+        <label data-ru="Эмоциональная энергия:" data-en="Emotional energy:">Эмоциональная энергия:</label>
+        <span id="val-emotional">50%</span>
+      </div>
+      <input type="range" min="0" max="100" value="50" id="emotional" oninput="updateVal('emotional')">
+    </div>
+    <div class="energy-group">
+      <div style="display:flex; justify-content: space-between;">
+        <label data-ru="Ментальная энергия:" data-en="Mental energy:">Ментальная энергия:</label>
+        <span id="val-mental">50%</span>
+      </div>
+      <input type="range" min="0" max="100" value="50" id="mental" oninput="updateVal('mental')">
+    </div>
+    <div class="energy-group">
+      <div style="display:flex; justify-content: space-between;">
+        <label data-ru="Духовная энергия:" data-en="Spiritual energy:">Духовная энергия:</label>
+        <span id="val-spiritual">50%</span>
+      </div>
+      <input type="range" min="0" max="100" value="50" id="spiritual" oninput="updateVal('spiritual')">
+    </div>
+    <button class="btn" style="width: 100%;" data-ru="Анализировать" data-en="Analyze" onclick="analyzeEnergy()">Анализировать</button>
+    <p id="result" style="margin-top: 15px; font-weight: 600; color: var(--accent);"></p>
   </div>
 </section>
 
 <section class="fade">
-  <h2 data-ru="Дневник энергии" data-en="Energy diary">
-    Дневник энергии
-  </h2>
-
-  <p data-ru="Запиши своё состояние и отслеживай изменения"
-     data-en="Write down your state and track changes">
-    Запиши своё состояние и отслеживай изменения
-  </p>
-
+  <h2 data-ru="Дневник энергии" data-en="Energy diary">Дневник энергии</h2>
   <div class="card">
-    <input type="text"
-           id="note"
-           placeholder="Как ты себя чувствуешь?"
-           data-placeholder-ru="Как ты себя чувствуешь?"
-           data-placeholder-en="How do you feel?">
-
-    <button class="btn"
-            data-ru="Сохранить"
-            data-en="Save"
-            onclick="saveNote()">Сохранить</button>
-
+    <input type="text" id="note" placeholder="Как ты себя чувствуешь?" data-placeholder-ru="Как ты себя чувствуешь?" data-placeholder-en="How do you feel?">
+    <button class="btn" style="width: 100%; margin-top: 10px;" data-ru="Сохранить" data-en="Save" onclick="saveNote()">Сохранить</button>
     <ul id="notesList"></ul>
   </div>
 </section>
 
-<footer data-ru="© Проект 'Персональное управление энергией'"
-        data-en="© Project 'Personal Energy Management'">
-  © Проект "Персональное управление энергией"
+<footer>
+  <p data-ru="© Проект 'Персональное управление энергией'" data-en="© Project 'Personal Energy Management'">© Проект "Персональное управление энергией"</p>
 </footer>
 
 <script>
- function toggleTheme() {
-    document.body.classList.toggle('dark');
-  }
-
-  const elements = document.querySelectorAll('.fade');
-
-  if (!('IntersectionObserver' in window)) {
-  document.querySelectorAll('.fade').forEach(el => {
-    el.classList.add('visible');
-  });
-}
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  });
-
-  elements.forEach(el => observer.observe(el));
-
-function analyzeEnergy() {
-  const p = +document.getElementById('physical').value;
-  const e = +document.getElementById('emotional').value;
-  const m = +document.getElementById('mental').value;
-  const s = +document.getElementById('spiritual').value;
-
-  const avg = (p + e + m + s) / 4;
-
-  const messages = {
-    ru: {
-      high: "Высокий уровень энергии. Лучшее время для сложных задач.",
-      mid: "Средний уровень энергии. Работай в умеренном темпе.",
-      low: "Низкий уровень энергии. Рекомендуется отдых и восстановление."
-    },
-    en: {
-      high: "High energy level. Best time for complex tasks.",
-      mid: "Moderate energy level. Work at a steady pace.",
-      low: "Low energy level. Rest and recovery recommended."
-    }
-  };
-
-  let status = "low";
-  if (avg > 70) status = "high";
-  else if (avg > 40) status = "mid";
-
-  document.getElementById('result').innerText = messages[currentLang][status];
-}
-function saveNote() {
-  const note = document.getElementById('note').value;
-  if (!note) return;
-
-  const li = document.createElement('li');
-  li.innerText = note;
-
-  document.getElementById('notesList').appendChild(li);
-  document.getElementById('note').value = "";
-}
 let currentLang = "ru";
 
+function toggleTheme() {
+    const body = document.body;
+    const themeBtn = document.getElementById('theme-btn');
+    body.classList.toggle('dark');
+    themeBtn.innerText = body.classList.contains('dark') ? "☀️" : "🌙";
+}
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+});
+document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+function analyzeEnergy() {
+    const p = +document.getElementById('physical').value;
+    const e = +document.getElementById('emotional').value;
+    const m = +document.getElementById('mental').value;
+    const s = +document.getElementById('spiritual').value;
+    const avg = (p + e + m + s) / 4;
+
+    const messages = {
+        ru: { 
+            high: "Высокий уровень энергии. Лучшее время для сложных задач.", 
+            mid: "Средний уровень энергии. Работай в умеренном темпе.", 
+            low: "Низкий уровень энергии. Рекомендуется отдых и восстановление." 
+        },
+        en: { 
+            high: "High energy level. Best time for complex tasks.", 
+            mid: "Moderate energy level. Work at a steady pace.", 
+            low: "Low energy level. Rest and recovery recommended." 
+        }
+    };
+    let status = avg > 70 ? "high" : (avg > 40 ? "mid" : "low");
+    const resultEl = document.getElementById('result');
+    resultEl.innerText = messages[currentLang][status];
+    resultEl.setAttribute('data-status', status); 
+}
+
+function updateVal(id) {
+    document.getElementById('val-' + id).innerText = document.getElementById(id).value + '%';
+}
+
+function saveNote() {
+    const noteInput = document.getElementById('note');
+    if (!noteInput.value.trim()) return;
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</strong>: ${noteInput.value}`;
+    document.getElementById('notesList').prepend(li);
+    noteInput.value = "";
+}
+
 function toggleLang() {
-  currentLang = currentLang === "ru" ? "en" : "ru";
-
-  document.querySelectorAll("[data-ru]").forEach(el => {
-    el.innerText = el.getAttribute("data-" + currentLang);
-  });
-  const noteInput = document.getElementById('note');
-  if (noteInput) {
+    currentLang = currentLang === "ru" ? "en" : "ru";
+    document.querySelectorAll("[data-ru]").forEach(el => {
+        el.innerText = el.getAttribute("data-" + currentLang);
+    });
+    const noteInput = document.getElementById('note');
     noteInput.placeholder = noteInput.getAttribute("data-placeholder-" + currentLang);
-  }
-  if (document.getElementById('result').innerText !== "") {
-    analyzeEnergy();
-  }
-
-  document.querySelector(".hero button").innerText = currentLang === "ru" ? "EN" : "RU";
+    document.getElementById("lang-btn").innerText = currentLang === "ru" ? "EN" : "RU";
+    const resultEl = document.getElementById('result');
+    if (resultEl.innerText !== "") {
+        analyzeEnergy();
+    }
 }
 </script>
 
