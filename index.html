@@ -530,11 +530,13 @@ function toggleTheme() {
     themeBtn.innerText = body.classList.contains('dark') ? "☀️" : "🌙";
 }
 
+// Анимация появления при скролле
 const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
     });
-});
+}, { threshold: 0.1 }); // Добавили порог срабатывания для мобильных
+
 document.querySelectorAll('.fade').forEach(el => observer.observe(el));
 
 function analyzeEnergy() {
@@ -559,7 +561,6 @@ function analyzeEnergy() {
     let status = avg > 70 ? "high" : (avg > 40 ? "mid" : "low");
     const resultEl = document.getElementById('result');
     resultEl.innerText = messages[currentLang][status];
-    resultEl.setAttribute('data-status', status); 
 }
 
 function updateVal(id) {
@@ -570,7 +571,11 @@ function saveNote() {
     const noteInput = document.getElementById('note');
     if (!noteInput.value.trim()) return;
     const li = document.createElement('li');
-    li.innerHTML = `<strong>${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</strong>: ${noteInput.value}`;
+    
+    // ИСПРАВЛЕНО: Добавлены обратные кавычки ``
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    li.innerHTML = `<strong>${time}</strong>: ${noteInput.value}`;
+    
     document.getElementById('notesList').prepend(li);
     noteInput.value = "";
 }
@@ -578,13 +583,15 @@ function saveNote() {
 function toggleLang() {
     currentLang = currentLang === "ru" ? "en" : "ru";
     document.querySelectorAll("[data-ru]").forEach(el => {
-        el.innerText = el.getAttribute("data-" + currentLang);
+        const text = el.getAttribute("data-" + currentLang);
+        if (text) el.innerText = text;
     });
+    
     const noteInput = document.getElementById('note');
     noteInput.placeholder = noteInput.getAttribute("data-placeholder-" + currentLang);
     document.getElementById("lang-btn").innerText = currentLang === "ru" ? "EN" : "RU";
-    const resultEl = document.getElementById('result');
-    if (resultEl.innerText !== "") {
+    
+    if (document.getElementById('result').innerText !== "") {
         analyzeEnergy();
     }
 }
