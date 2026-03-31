@@ -1,7 +1,6 @@
-<!DOCTYPE html>
+<html>
 <html lang="ru">
 <head>
-  <!-- КОДИРОВКА ДОЛЖНА БЫТЬ ПЕРВОЙ -->
   <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
@@ -304,6 +303,41 @@
   <p>Телефон: <a href="tel:+77052963774">+7 705 296 37 74</a></p>
 </section>
 
+<section class="fade">
+  <h2>Проверка уровня энергии</h2>
+  <p>Отметь своё состояние и получи рекомендацию</p>
+
+  <div class="card">
+    <label>Физическая энергия:</label>
+    <input type="range" min="0" max="100" value="50" id="physical">
+
+    <label>Эмоциональная энергия:</label>
+    <input type="range" min="0" max="100" value="50" id="emotional">
+
+    <label>Ментальная энергия:</label>
+    <input type="range" min="0" max="100" value="50" id="mental">
+
+    <label>Духовная энергия:</label>
+    <input type="range" min="0" max="100" value="50" id="spiritual">
+
+    <button class="btn" onclick="analyzeEnergy()">Анализировать</button>
+
+    <p id="result"></p>
+  </div>
+</section>
+
+<section class="fade">
+  <h2>Дневник энергии</h2>
+  <p>Запиши своё состояние и отслеживай изменения</p>
+
+  <div class="card">
+    <input type="text" id="note" placeholder="Как ты себя чувствуешь?">
+    <button class="btn" onclick="saveNote()">Сохранить</button>
+
+    <ul id="notesList"></ul>
+  </div>
+</section>
+
 <footer>
   © Проект "Персональное управление энергией"
 </footer>
@@ -330,6 +364,37 @@
   });
 
   elements.forEach(el => observer.observe(el));
+
+function analyzeEnergy() {
+  const p = +document.getElementById('physical').value;
+  const e = +document.getElementById('emotional').value;
+  const m = +document.getElementById('mental').value;
+  const s = +document.getElementById('spiritual').value;
+
+  const avg = (p + e + m + s) / 4;
+
+  let text = "";
+
+  if (avg > 70) {
+    text = "Высокий уровень энергии. Лучшее время для сложных задач.";
+  } else if (avg > 40) {
+    text = "Средний уровень энергии. Работай в умеренном темпе.";
+  } else {
+    text = "Низкий уровень энергии. Рекомендуется отдых и восстановление.";
+  }
+
+  document.getElementById('result').innerText = text;
+}
+function saveNote() {
+  const note = document.getElementById('note').value;
+  if (!note) return;
+
+  const li = document.createElement('li');
+  li.innerText = note;
+
+  document.getElementById('notesList').appendChild(li);
+  document.getElementById('note').value = "";
+}
 </script>
 
 </body>
